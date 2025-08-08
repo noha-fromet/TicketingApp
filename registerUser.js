@@ -1,4 +1,4 @@
-export async function register() {
+export async function registerUser() {
     try {
         const response = await fetch('https://ticketing.development.atelier.ovh/api/mobile/auth/register', {
             method: 'POST',
@@ -6,17 +6,19 @@ export async function register() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: "admin-cdpi@atelier.ovh",
-                name: "admin-cdpi",
-                password: "AdminCDPI123",
-                username: "admin-cdpi",
+                email: "utilisateuratelier2@atelier.ovh",
+                name: "utilisateuratelier2",
+                username: "utilisateuratelier2",
+                password: "UserCDPI121",
+                company_id: "nls628xs4p24rej", // ← FORCÉ à "L'atelier"
             }),
         });
 
-        const data = await response.json();
+        const data = await response.json(); // 🟡 D'abord on récupère la réponse JSON
 
         if (response.status === 201) {
-            console.log("✅ Compte créé avec succès :", data);
+            console.log("✅ Compte utilisateur créé avec succès :", data);
+            console.log("🏢 Entreprise associée :", data.user?.company || data.company || "Non précisée");
         } else if (response.status === 400) {
             console.warn("❌ Données invalides :", data);
         } else if (response.status === 409) {

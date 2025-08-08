@@ -1,38 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { fetchTickets } from './api';
-import { login, getProfile } from './auth';
-import { register } from './register';
+import React from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Navigation from './Navigation';
+
+const queryClient = new QueryClient();
 
 export default function App() {
-  useEffect(() => {
-    async function start() {
-      await fetchTickets();   // Appel des tickets
-      await register();       // Inscription
-
-      const token = await login(); // Connexion
-      if (token) {
-        await getProfile(token);  // Récupération du profil
-      }
-    }
-
-    start();
-  }, []);
-
-  return (
-    <View style={styles.container}>
-      <Text>Bienvenue dans l'app Ticketing !</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Navigation />
+        </QueryClientProvider>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
